@@ -1,8 +1,10 @@
 var apn = require('apn');
 var gcm = require("node-gcm");
+var mysql = require('mysql');
 var iOS_options_developer = {};
 var iOS_options_production = {};
 var android_setting = {};
+var mysql_conn = {};
 
 
 var express = require('express');
@@ -11,19 +13,36 @@ var app = express();
 init();
 
 function init() {
+	console.log("Init Started.");
 	// Init process for Web Server
 	
 	//iOS init Data	
 	iOS_options_developer = {
 		gateway : "gateway.sandbox.push.apple.com",  // Production : gateway.sandbox.push.apple.com
-	    cert: './keys2/cert_production.pem',
-	    key: './keys2/key_production.pem',
+	    cert: './keys2/cert_production.pem', // should Use vaild certificate
+	    key: './keys2/key_production.pem', // also should use valid cert
 	    production: false
 	};
 	//Android init Data
 	android_setting = {
-		"api_token": "API_Token",
+		"api_token": "API_Token", // Android GCM Token 
 	}
+
+	mysql_conn = mysql.createConnection({ // Use for Select GCM Regid or APM Token String
+	    host    : 'localhost',
+	    port : 3306,
+	    user : 'terry',
+	    password : 'asdf1234',
+	    database:'terry'
+	});
+
+	mysql_conn.connect(function(err) {
+	    if (err) {
+	        console.error('mysql connection error');
+	        console.error(err);
+	        throw err;
+	    }
+	});
 
 	//HTTP Server for node
 	var server = app.listen(50254, function () {
@@ -31,8 +50,6 @@ function init() {
 		var port = server.address().port
 		console.log("push app listening at http://%s:%s", host, port)
 	});
-
-	
 }
 
 function iOS_Send(token, title, message) {
@@ -82,6 +99,7 @@ function Android_Send(Tokens, title, description) {
 	});
 }
 
+
 app.get("/", function(req, res,next) {
 	res.send("Hello world");		
 });
@@ -105,3 +123,4 @@ app.get("/apns", function(req,res) {
 
 	res.send("Response Ok");
 });
+
