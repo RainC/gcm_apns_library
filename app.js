@@ -45,8 +45,8 @@ function iOS_Send(token, title, message) {
 	var myDeviceArray = []
 
 	for (var i=0; i<results.length; i++) {
-	     var token = results[i]._id;//'앞에서 Xcode로 build 하면서 획득한 아이폰 디바이스 토큰을 입력한다.'
-	     var myDevice = new apn.Device(token);
+	     var tokens = results[i]; //'앞에서 Xcode로 build 하면서 획득한 아이폰 디바이스 토큰을 입력한다.'
+	     var myDevice = new apn.Device(tokens);
 	     myDeviceArray.push(myDevice);
 	}
 	try {
