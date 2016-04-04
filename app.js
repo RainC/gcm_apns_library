@@ -1,5 +1,5 @@
 var apn = require('apn');
-var node_gcm = require("node_gcm");
+var gcm = require("node-gcm");
 var iOS_options_developer = {};
 var iOS_options_production = {};
 var android_setting = {};
@@ -45,7 +45,7 @@ function Android_Send(Tokens) {
 	registrationIds = Tokens;
 	// 푸시를 날린다!
 	sender.send(message, registrationIds, 4, function (err, result) {
-		console.log(result); // Show result 
+		console.log(err); // Show result 
 	});
 }
 
@@ -64,13 +64,17 @@ function init() {
 		"api_token": "API_Token",
 	}
 
-	var server = app.listen(8081, function () {
+	var server = app.listen(50254, function () {
 		var host = server.address().address
 		var port = server.address().port
 		console.log("push app listening at http://%s:%s", host, port)
 	});
+	app.get("/", function(req, res,next) {
+		res.send("Hello world");		
+	});
 	app.get("/gcm", function (req, res, next) {
 		Android_Send("sdf");
+		res.send("Response Ok");
 	});
 
 }
