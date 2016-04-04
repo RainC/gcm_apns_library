@@ -70,7 +70,7 @@ function init() {
 		console.log("push app listening at http://%s:%s", host, port)
 	});
 	app.get("/gcm", function (req, res, next) {
-		response.send("GCM");
+		Android_Send("sdf");
 	});
 
 }
