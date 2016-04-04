@@ -36,17 +36,18 @@ function init() {
 }
 
 function iOS_Send(token, title, message) {
+	var apnConnection = new apn.Connection(iOS_options_developer);
 	var note = new apn.Notification();
 	note.badge = 3;
 	note.alert = title;
 	note.payload = {'message': message};
 
-	var results = token;
+	
 	var myDeviceArray = []
 
-	for (var i=0; i<results.length; i++) {
-	     var tokens = results[i]; //'앞에서 Xcode로 build 하면서 획득한 아이폰 디바이스 토큰을 입력한다.'
-	     var myDevice = new apn.Device(tokens);
+	for (var i=0; i<token.length; i++) {
+	     //var tokens = results[i]; //'앞에서 Xcode로 build 하면서 획득한 아이폰 디바이스 토큰을 입력한다.'
+	     var myDevice = new apn.Device(token[i]);
 	     myDeviceArray.push(myDevice);
 	}
 	try {
@@ -96,7 +97,7 @@ app.get("/gcm", function (req, res, next) {
 });
 
 app.get("/apns", function(req,res) {
-	var token = ["2f09fka90wek"]
+	var token = [req.query.s_apns];
 	var title = req.query.s_title;
 	var desc = req.query.s_desc;
 
