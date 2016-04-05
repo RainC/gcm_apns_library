@@ -36,13 +36,14 @@ function init() {
 	    database:'terry'
 	});
 
-	mysql_conn.connect(function(err) {
-	    if (err) {
-	        console.error('mysql connection error');
-	        console.error(err);
-	        throw err;
-	    }
-	});
+	// mysql_conn.connect(function(err) {
+	//     if (err) {
+	//         console.error('mysql connection error');
+	//         console.error(err);
+	//         throw err;
+	//     }
+	// });
+
 
 	//HTTP Server for node
 	var server = app.listen(50254, function () {
